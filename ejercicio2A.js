@@ -8,10 +8,10 @@ fetch("user.json") // Hacer una solicitud para obtener el contenido del archivo 
   
   .then(response => response.json()) // Convertir la respuesta a formato JSON, Una vez que la solicitud se completa con éxito, la respuesta se convierte a formato JSON utilizando el método json() del objeto Response. Esto se hace encadenando otra promesa a la primera.
 
-  .then(users => { // Cuando la respuesta sea convertida a JSON, proceder con los datos obtenidos, Cuando la respuesta se convierte a JSON, este bloque de código se ejecuta. users ahora contiene los datos del archivo user.json en formato JSON.
+  .then(data => { // Cuando la respuesta se convierte a JSON, este bloque de código se ejecuta. data ahora contiene los datos del archivo user.json en formato JSON.
 
     // Filtrar solo los usuarios que son aprendices,
-    const aprendices = users.filter(user => user.aprendiz); // Se filtran los usuarios para obtener solo aquellos que tienen la propiedad aprendiz establecida como verdadera. Esto se hace utilizando el método filter() de los arrays.
+    const aprendices = data.users.filter(user => user.aprendiz); // Se filtran los usuarios para obtener solo aquellos que tienen la propiedad aprendiz establecida como verdadera. Esto se hace utilizando el método filter() de los arrays.
 
     // Crear un array de objetos con el nombre y el avatar de cada aprendiz
     const datosAprendices = aprendices.map(aprendiz => ({ // Utilizar map para crear un nuevo array con los datos de cada aprendiz. Se extrae el nombre del aprendiz y se construye la URL del avatar del aprendiz en GitHub.
