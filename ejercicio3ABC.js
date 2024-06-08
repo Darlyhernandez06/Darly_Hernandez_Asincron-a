@@ -3,55 +3,119 @@
 // b. Una todos los resultados en un solo arreglo
 // c. Filtre la consulta con solo los aprendices que tengan el rol de aprendiz, esta solución se deba dar antes de realizar la solicitud al api.
 
-// Define una función de flecha expresada que es asíncrona, utilizando la sintaxis de funciones de flecha.
+// EXPLICACION DEL CODIGO LINEA POR LINEA 
+
+// Define una función de flecha expresada que es asíncrona.
 const obtenerRepositorios = async () => {
+    // el código está dentro de un bloque try-catch para manejar cualquier error que pueda
+    // ocurrir durante el proceso
     try {
-      // Hacer una solicitud para obtener el contenido del archivo users.json
-      // En el codigo vemos un "fetch" y este se esta utilizando para obtener recursos de la red, como lo son los archivos json, desde un servidor web y aqui es para obtener el contenido del archivo JSON "user.json" desde el servidor, La función "fetch" devuelve una promesa que resuelve en una respuesta a la solicitud, Se utiliza "await" para esperar la respuesta de la solicitud antes de continuar con la ejecución del código, Después, se utiliza el método.json()' para convertir la respuesta en un objeto JavaScript que representa los datos del archivo JSON, La respuesta se almacena en la variable 'response', que representa la respuesta de la solicitud.
-      const response = await fetch("user.json");
-      
-      // Convertir la respuesta a formato JSON
-      const data = await response.json(); // "response.json()'"" devuelve otra promesa que resuelve en el objeto JavaScript con los datos del archivo JSON, Se utiliza 'await' nuevamente para esperar la conversión antes de continuar con la ejecución del código, El objeto JavaScript resultante se almacena en la variable 'user', que contiene los datos del archivo JSON.
-    
-      // Utiliza una función de flecha expresada como función de callback en el método filter para filtrar los usuarios que son aprendices.
-      const aprendices = data.users.filter(user => user.aprendiz); // Respuesta a la parte c)
-    
-      // Crear un arreglo para almacenar los repositorios de cada aprendiz
-      let repositoriosAprendices = [];
-    
-      // Iterar sobre cada aprendiz
-      for (const aprendiz of aprendices) {
-        // Hacer una solicitud para obtener los repositorios públicos del aprendiz en GitHub
-        const respuestaGithub = await fetch(`https://api.github.com/users/${aprendiz.user}/repos`);
-        // Convertir la respuesta a formato JSON
-        const repositorios = await respuestaGithub.json();
-            
-        // Mostrar los repositorios públicos del aprendiz en consola
-        console.log(`Repositorios de ${aprendiz.name}:`); // Respuesta a la parte a)
-        console.table(repositorios); // Respuesta a la parte a)
-    
-        // Agregar los repositorios del aprendiz al arreglo general
-        repositoriosAprendices = [...repositoriosAprendices, ...repositorios]; // Respuesta a la parte b)
+        // Hacer una solicitud para obtener el contenido del archivo users.json
+        const response = await fetch("user.json"); 
+        // La función fetch realiza una solicitud HTTP GET al archivo user.json.
+        // La palabra clave await se utiliza para esperar la respuesta de la solicitud 
+        // antes de continuar con la ejecución del código. La función fetch() devuelve 
+        // una promesa que eventualmente se resolverá con la respuesta del servidor.
+        // El resultado de la solicitud es almacenado en la variable response.
+
+        const data = await response.json(); 
+        // Se convierte la respuesta a formato JSON.
+        // El método json() es un método del objeto Response que devuelve una promesa que
+        // eventualmente se resuelve con los datos de la respuesta en formato JSON.
+        // Esto se hace utilizando el método json() del objeto Response.
+        // El operador await se utiliza para esperar a que esta promesa se resuelva, 
+        // lo que significa que la ejecución del código se detiene hasta que la conversión
+        // a JSON se complete.
+        // Los datos convertidos a JSON son almacenados en la variable data.
+
+        // Utilizar una función de flecha expresada como función de callback en el método filter para filtrar los usuarios que son aprendices.
+        // La función de callback es user => user.aprendiz. Esta función se pasa como 
+        // argumento al método filter() y se ejecuta para cada elemento del array 
+        // data.users. 
+        // La función verifica si la propiedad aprendiz de cada usuario es verdadera. 
+        // Si es así, ese usuario se incluye en el nuevo array resultante.
+        // data.users: La variable data contiene los datos obtenidos del archivo 
+        // "user.json" después de convertirlos a formato JavaScript mediante la función 
+        // json(). data es un objeto que tiene una propiedad users que es un array de 
+        // usuarios.
+        const aprendices = data.users.filter(user => user.aprendiz); // Respuesta a la parte c)
+        // Se filtran los usuarios que son aprendices.
+        // Esto se hace utilizando el método filter() en el array de usuarios (data.users).
+        // La función de filtrado comprueba si la propiedad "aprendiz" de cada usuario es verdadera.
+        // El resultado del filtrado se asigna a la variable aprendices.
+
+        // Crear un arreglo para almacenar los repositorios de cada aprendiz.
+        // La variable "repositoriosAprendices" se inicializa como un arreglo vacío.
+        let repositoriosAprendices = [];
+
+        // Iterar sobre cada aprendiz.
+        // Este bucle for se utiliza para iterar sobre cada aprendiz almacenado en el 
+        // array aprendices. La variable aprendiz representará a cada uno de los aprendices
+        // en cada iteración del bucle.
+        for (const aprendiz of aprendices) {
+            // Hacer una solicitud para obtener los repositorios públicos del aprendiz en GitHub.
+            const respuestaGithub = await fetch(`https://api.github.com/users/${aprendiz.user}/repos`);
+            // Se hace una solicitud HTTP GET a la API de GitHub para obtener los repositorios públicos del aprendiz.
+            // La URL de la solicitud se construye utilizando el nombre de usuario del aprendiz (aprendiz.user).
+            // Dentro del bucle, se utiliza la función fetch() para hacer una solicitud HTTP GET a la
+            // API de GitHub. La URL de la solicitud se construye utilizando el nombre de usuario del aprendiz (aprendiz.user), 
+            // que se espera que sea el nombre de usuario de GitHub. La palabra clave await se utiliza para esperar la respuesta de la 
+            // solicitud antes de continuar con la ejecución del código.
+
+            const repositorios = await respuestaGithub.json();
+            // Se convierte la respuesta a formato JSON.
+            // Esto se hace utilizando el método json() del objeto Response.
+            // El método json() es un método del objeto Response que devuelve una promesa que eventualmente se 
+            // resuelve con los datos de la respuesta en formato JSON.
+            // El operador await se utiliza para esperar a que esta promesa se resuelva, lo que significa que la 
+            // ejecución del código se detiene hasta que la conversión a JSON se complete.
+            // Los datos convertidos a JSON se asignan a la variable repositorios.
+
+            // Mostrar los repositorios públicos del aprendiz en consola.
+            // Esto inserta dinámicamente el nombre del aprendiz actual en el mensaje de la consola
+            console.log(`Repositorios de ${aprendiz.name}:`); // Respuesta a la parte a)
+            // Se imprime el nombre del aprendiz.
+            console.table(repositorios); // Respuesta a la parte a)
+            // Se imprime una tabla con los repositorios del aprendiz.
+
+            // Agregar los repositorios del aprendiz al arreglo general.
+            // repositoriosAprendices: Esta variable almacena todos los repositorios de los aprendices. 
+            repositoriosAprendices = [...repositoriosAprendices, ...repositorios]; // Respuesta a la parte b)
+            // Se utilizan los operadores de propagación (...) para agregar los repositorios del aprendiz al arreglo general.
+            // Asigna el nuevo array resultante de la concatenación de repositorios a la variable repositoriosAprendices. Esto asegura que 
+            // repositoriosAprendices contenga todos los repositorios de todos los aprendices iterados hasta el momento.
         }
-    
-        // Retornar todos los repositorios en un solo arreglo
+
+        // Retornar todos los repositorios en un solo arreglo.
         return repositoriosAprendices;
+        // Se retorna el arreglo con todos los repositorios de los aprendices.
     } catch (error) {
-        // Manejar cualquier error que pueda ocurrir durante el proceso
+        // Manejar cualquier error que pueda ocurrir durante el proceso.
         console.error('Error:', error);
-        // Devolver un arreglo vacío en caso de error
+        // Se imprime cualquier error que ocurra.
         return [];
+        // Devolver un arreglo vacío en caso de error.
     }
 };
 
-// Llamar a la función obtenerRepositorios y utilizar async/await para manejar la respuesta, función flecha autoinvocada asíncrona
+// Llamar a la función obtenerRepositorios y utilizar async/await para manejar la respuesta, función flecha autoinvocada asíncrona.
 (async () => {
-    // Esperar a que se resuelva la función obtenerRepositorios y almacenar el resultado en la variable repositorios
+    // Esperar a que se resuelva la función obtenerRepositorios y almacenar el resultado en la variable repositorios.
     const repositorios = await obtenerRepositorios();
-    // Imprimir en la consola todos los repositorios obtenidos
+    // Se llama a la función obtenerRepositorios y se espera su resolución.
+    // Los repositorios obtenidos se almacenan en la variable repositorios.
+
+    // Imprimir en la consola todos los repositorios obtenidos.
     console.log("Todos los repositorios:");
     console.table(repositorios);
+    // Se imprime una tabla con todos los repositorios obtenidos.
 })();
+
+// En este caso, "función flecha autoinvocada asíncrona" se refiere a una función de flecha
+// definida y ejecutada inmediatamente utilizando la sintaxis () => {...}(). La función es
+// asíncrona (async), lo que significa que puede contener expresiones await dentro de ella,
+// y es autoinvocada, lo que significa que se ejecuta inmediatamente después de ser definida.
+
 
 // El operador de propagación (...) se utiliza en JavaScript para descomponer o "desempaquetar" los elementos de un arreglo o los valores de un objeto. En este código:
 
